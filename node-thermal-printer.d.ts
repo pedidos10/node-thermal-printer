@@ -12,14 +12,7 @@ declare enum PrinterTypes {
   STAR = "star"
 }
 
-declare class ThermalPrinter {
-  printerTypes: PrinterTypes;
-
-  /**
-   * Constructor
-   * @param Object config (type, interface, width, characterSet, removeSpecialCharacters, options)
-  */
-  constructor(config: {
+declare interface InitialConfig {
     type?: PrinterTypes;
     interface: string;
     width?: number;
@@ -28,9 +21,19 @@ declare class ThermalPrinter {
     driver?: Object;
     removeSpecialCharacters?: boolean;
     options?: {
-      timeout?: number
+        timeout?: number
     };
-  });
+}
+
+declare class ThermalPrinter {
+  printerTypes: PrinterTypes;
+  config: InitialConfig & { initialConfig: InitialConfig };
+
+  /**
+   * Constructor
+   * @param Object config (type, interface, width, characterSet, removeSpecialCharacters, options)
+  */
+  constructor(config: InitialConfig);
 
   /**
    * Send printing buffer to printer
@@ -197,10 +200,10 @@ declare class ThermalPrinter {
 
   /**
    * Set height and width font size
-   * @param Number height
    * @param Number width
+   * @param Number height
   */
-  setTextSize(height: number, width: number): void;
+  setTextSize(width: number, height: number): void;
 
   /**
    * Add font to left side and right side
